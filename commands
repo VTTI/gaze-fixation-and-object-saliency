@@ -1,0 +1,9 @@
+
+python3 main.py --front "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/SHRP2 video/SHRP2FrontViewVideoV1/CHPV_0000_0000_10_130218_1924_00088_Front.mp4" --face /vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/full_face_video/fullFaceViewVideoV1/CMVP_0000_0000_10_130218_1429_00079_Face.mp4 --output /vtti/scratch/hbhagat/driver_gaze_fixation/
+
+python3 heatmap_overlay.py /vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/full_face_video/fullFaceViewVideoV1/CMVP_0000_0000_10_130218_1429_00079_Face.mp4 "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/SHRP2 video/SHRP2FrontViewVideoV1/CHPV_0000_0000_10_130218_1924_00088_Front.mp4" /vtti/scratch/hbhagat/driver_gaze_fixation/l2cs_CMVP_0000_0000_10_130218_1429_00079_Face_bbox.csv /vtti/scratch/hbhagat/driver_gaze_fixation
+
+python3 main.py --front "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/SHRP2 video/SHRP2FrontViewVideoV1/CHPV_0000_0000_10_130205_0021_00041_Front.mp4" --face /vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/full_face_video/fullFaceViewVideoV1/CMVP_0000_0000_10_130204_1926_00031_Face.mp4 --output /vtti/scratch/hbhagat/driver_gaze_fixation/
+
+./run.sh "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/full_face_video/fullFaceViewVideoV1/CMVP_0000_0000_10_130218_1429_00079_Face.mp4" "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/SHRP2 video/SHRP2FrontViewVideoV1/CHPV_0000_0000_10_130218_1924_00088_Front.mp4" "0" "./config.yaml" "/vtti/scratch/hbhagat/driver_gaze_fixation/"
+
