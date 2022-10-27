@@ -1,80 +1,67 @@
-# HOW TO USE Driver Gaze Fixation
+# Driver Gaze Fixation and Object Saliency
+This repository provides code to estimate Point of Gaze (PoG) on the scene-facing (front video) view w.r.t the gaze angle obtained from the driver-faciing (face video) view. We also provide other functionalities listed below. Please note that the code is tested on the specified models but you could change them according to your needs.
 
-# STEP 1
+1. Closest object of fixation from PoG using Panoptic Segmentation (Detectron2)
+2. Closest object of fixation from PoG using Object Detection (SHRP2 trained models)
+3. Fixation Heatmap (Heatmap generated for the current frame by aggregating the PoGs from the last (fps x 3) frames)
+4. Yarbus Plots
 
-● Clone the github directory
+## Installation
+To install the framework the recommened method is by following these steps:
+
+Install Docker (https://www.docker.com/).
+
+Create a new file named "Dockerfile" and copy inside the contents of "docker/Dockerfile".
+
+Run: docker build . -t gazefixation
+
+Run: nvidia-docker run -it --gpus=all --rm -v "path_to_local_folder":"path_inside_docker" gazefixation bash
+
+# Setting up the config file
+Below is an examaple of the config file.
 ``` 
-Git clone “https://gitlab.vtti.vt.edu/ctbs/fhwa-cv/drivergazefixation.git”
+# gaze angle estimation model path, architecture and batch size (we use L2CSNet's specifications)
+snapshot_path: ./models/Gaze360/L2CSNet_gaze360.pkl
+arch: ResNet50
+batch_size: 1
+
+# object detection model's specifications (we have used our inhouse SHRP2 object detection model)
+det_gpu_id: 1
+det_model_checkpoint: /vtti/scratch/mmdetection/trained_models/shrp2_original_split+extra_data_outside_objects/epoch_10.pth
+det_model_classes: /vtti/scratch/mmdetection/classes/classes_shrp2_extra.txt
+det_model_config: /vtti/scratch/mmdetection/custom_configs/shrp2+extra/cascade_rcnn_r101_fpn_dconv_c3-c5_1x_coco.py
+det_model_threshold: 0.5
+
+# dist is the distance in pixels from driver's face to the camera
+dist: 480
+# f_picth and f_yaw are the correction of front camera view 
+f_pitch: -0.04
+f_yaw: 0.15
+# front_picth and front_yaw are the angles calculated by estimate_front_angle.py file and are automatically updated in the config file when executed
+front_pitch: -0.4002903467336685
+front_yaw: 0.03331976381909563
+
+# These are just stored to retain previous calculations of front_picth and front_yaw
+old_front_pitch: -0.4002903467336685
+old_front_yaw: 0.03331976381909563
+
+# Segmentation model configurations are stored here. (we use detectron2's panoptic model)
+seg_confidence_threshold: 0.5
+seg_config_file: configs/COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml
+seg_opts:
+- MODEL.WEIGHTS
+- ./models/detectron2/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
+seg_overlay: 1
 ```
-● Build the docker file:
-```
-cd drivergazefixation
-docker build -t drivergaze .
-```
-● Run the docker image:
-```
-docker run -it --rm --runtime=nvidia -v /vtti:/vtti --user 12731:
-drivergaze:latest /bin/bash
+# Usage
 
-NOTE: runtime arg is important. Keep user ID that has access to input and output folder. Make sure to -v the directory that is the origin for all the paths you mention or refactor paths accordingly.
-
-```
-● After running docker, CD to the path where you cloned drivergazefixation
-
-● For example: cd /vtti/scratch/hbhagat/drivergazefixation
-
-# STEP 2
-
-First of all, we need to set some parameters in the config.yaml
-
-● Edit the config file to specify which object detection model to use
-
-    ○ det_model_checkpoint is the path to the .pth file or the model file
-
-    ○ det_model_config is the path to the config file for the specific model
-
-    ○ det_model_classes refers to the txt file with classes associated with the model
-
-    ○ det_model_threshold is the cutoff threshold for the detection results
-
-    ○ det_gpu_id is the gpu that the detection model will use
-
-    ○ front_pitch is the estimated forward view pitch value (use estimate_front_angle.py if angles are not known)
-
-    ○ front_yaw is the estimated forward view yaw value (use estimate_front_angle.py if angles are not known)
-
-    ○ dist is the estimated distance value in pixels from driver's face to the camera calculated using the given formula (refer to the pdf for indepth information)
-
-    ○ snapshot_path is the path to L2CS-Net gaze model
-
-    ○ arch is the architecture used to train the model
-
-    ○ batch_size is batch size of the model
-
-    ○ f_picth is adjustments to the forward pitch
-
-    ○ f_yaw is the adjustments to the forward yaw
-    
-
-# STEP 3
-
-There are 3 files that are run sequentially using ./run.sh. The get_gaze.py file is used to record the gaze angles and the face coordinates in a csv file with l2cs_* as a prefix. Next filter_csv.py file uses the csv file generated previously, and smooths out the jittering in gaze angles using a order 5 butterworth filter with cutoff as 2 (could be changed in function in the file). And lastly, heatmap_overlay.py file calculates the pix_x and pix_y for the gaze points from the filtered csv and generates a heatmap to overlay on the forward view. The outcome is a merged video with gaze point and heatmap.
-
-./run.sh takes 5 arguments
-
-○ $1 is the path to the face view video file
-
-○ $2 is the path to the forward view video file
-
-○ $3 is the gpu id
-
-○ $4 is confog.yaml file path
-
-○ $5 is the path of the output directory (to store result)
-
-Example Command: 
-./run.sh "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/full_face_video/fullFaceViewVideoV1/CMVP_0000_0000_10_130218_1429_00079_Face.mp4" "/vtti/projects03/451600/Working/Task_2_3/Mask_Validation/nonclippedMaskValidation/SHRP2 video/SHRP2FrontViewVideoV1/CHPV_0000_0000_10_130218_1924_00088_Front.mp4" "0" "./config.yaml" "/vtti/scratch/hbhagat/driver_gaze_fixation/"
+You could directly use the run.sh command to get the desired output.
 
 
-        
+The L2CSNet's Pretrained Gaze360 model (https://github.com/Ahmednull/L2CS-Net) was used to get the gaze angles. First we obtain the gaze angles and store them in a seperate CSV file. The parameters needed to obtain the gaze angles are the face video path, front video path (just to get the frame width), config file path and output directory path.
 
+The next step is estimating the front angle. This can be done by executing the estimating_front_angle.py file like so. It needs the gaze angles csv file and an output directory path as arguments.
+
+Since gaze angle estimation is done on a frame by frame basis we filter angles using a butterworth filter. filter_csv.py file takes the arguments of gaze angles, output directory, cutoff frequency, nyq frequency and order of the butterworth filter. As an output it saves a csv file with filtered gaze angles.
+
+gaze_overlayl.py file is used to stich the face and front video side by side. gaze angles from the csv file are taken and transfored to PoG on the front video frames. This file also takes arguments of --obj_det and --pan_seg. if you specify the arguments, the code will perform object detection and segementation respectively, else it will just perform the PoG transformation and save the video output file. It takes the arguments of the face video file, the front video file, 
