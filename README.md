@@ -104,4 +104,4 @@ python3 heatmap_overlay.py --face <face_video_file_path> --front <front_video_fi
 
 # Demo results
 ## output with panoptic segmentation
-
+![](https://github.com/VTTI/gaze-fixation-and-object-saliency/edit/master/gaze_fixation_example.gif)
