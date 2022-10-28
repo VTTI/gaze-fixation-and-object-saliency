@@ -9,14 +9,14 @@ dist: 480
 f_pitch: -0.04
 f_yaw: 0.15
 front_pitch: -0.4002903467336685
-front_yaw: 0.03331976381909563
+front_yaw: 0.03331920100502517
 gpu: 1
-old_front_pitch: -0.4002903467336685
-old_front_yaw: 0.03331976381909563
+old_front_pitch: -0.6602958140703518
+old_front_yaw: -2.234137050251256
 seg_confidence_threshold: 0.5
 seg_config_file: configs/COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml
 seg_opts:
 - MODEL.WEIGHTS
-- ./models/detectron2/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
+- detectron2://COCO-PanopticSegmentation/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
 seg_overlay: 1
-snapshot_path: ./models/Gaze360/L2CSNet_gaze360.pkl
+snapshot_path: ../driver_gaze_fixation/models/Gaze360/L2CSNet_gaze360.pkl

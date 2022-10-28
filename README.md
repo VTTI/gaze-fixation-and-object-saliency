@@ -56,52 +56,12 @@ seg_overlay: 1
 # Usage
 
 You could directly use the run.sh command to get the desired output.
-```
-./run.sh <face_video_file_path> <front_video_file_path> <gpu_id> <config_file_path> <output_directory>
-```
-Note: for filtering we use default values for 15 fps
-cutoff: 2
-nyq frequency: 7.5
-order of butterworth filter: 4
 
-If you'd like to run the files seperately:
 
-### get_gaze.py
 The L2CSNet's Pretrained Gaze360 model (https://github.com/Ahmednull/L2CS-Net) was used to get the gaze angles. First we obtain the gaze angles and store them in a seperate CSV file. The parameters needed to obtain the gaze angles are the face video path, front video path (just to get the frame width), config file path and output directory path.
 
-```
-python3 get_gaze.py --face <face_video_file_path> --front <front_video_file_path> --gpu <gpu_id> --config <config_file_path> --output <output_directory_path>
-```
-### estimate_front_angle.py
 The next step is estimating the front angle. This can be done by executing the estimating_front_angle.py file like so. It needs the gaze angles csv file and an output directory path as arguments.
 
-```
-python3 estimate_front_angle.py --file <gaze_angles_csv> --output <output_directory_path>
-```
-
-### filter_csv.py
 Since gaze angle estimation is done on a frame by frame basis we filter angles using a butterworth filter. filter_csv.py file takes the arguments of gaze angles, output directory, cutoff frequency, nyq frequency and order of the butterworth filter. As an output it saves a csv file with filtered gaze angles.
 
-```
-python3 filter_csv.py <gaze_angles_csv> <output_directory_path> <cutoff_frequency> <nyq frequency> <order_of_filter>
-
-```
-
-### gaze_overlay.py
-gaze_overlayl.py file is used to stich the face and front video side by side. gaze angles from the csv file are taken and transfored to PoG on the front video frames. This file also takes arguments of --obj_det and --pan_seg. if you specify the arguments, the code will perform object detection and segementation respectively, else it will just perform the PoG transformation and save the video output file. It takes the arguments of the face video file, the front video file, output folder path, config file path and optional arguments : pan_seg, obj_det (give these if you want the funcationality in the output)
-
-```
-python3 gaze_overlay.py --face <face_video_file_path> --front <front_video_file_path> --config <config_file_path> --output_folder <output_directory_path> --obj_det --pan_seg
-
-```
-### heatmap_overlay.py
-The output is generared with heatmaps over the PoG estimates.
-
-```
-python3 heatmap_overlay.py --face <face_video_file_path> --front <front_video_file_path> --config <config_file_path> --output <output_directory_path>
-```
-
-
-# Demo results
-## output with panoptic segmentation
-![](https://github.com/VTTI/gaze-fixation-and-object-saliency/edit/master/gaze_fixation_example.gif)
+gaze_overlayl.py file is used to stich the face and front video side by side. gaze angles from the csv file are taken and transfored to PoG on the front video frames. This file also takes arguments of --obj_det and --pan_seg. if you specify the arguments, the code will perform object detection and segementation respectively, else it will just perform the PoG transformation and save the video output file. It takes the arguments of the face video file, the front video file, 

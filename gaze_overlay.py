@@ -196,7 +196,7 @@ slide_x=[]
 slide_y=[]
 csvout_bbox_real = open(osp.join(output_folder,"dgf_"+osp.splitext(osp.basename(face))[0])  + "_real.csv", "w+")
 csvout_bbox_adjusted = open( osp.join(output_folder,"dgf_"+osp.splitext(osp.basename(face))[0]) + "_adjusted.csv", "w+")
-
+print("overlay in progress..")
 with open(det_model_classes, 'r') as f:
     classes = tuple(f.read().splitlines())
 record_heatmap=fps*3
@@ -215,12 +215,12 @@ while face_cap.isOpened():
                 next_frame_no=int(float(next_row[0]))
                 while(True):
                     if(int(float(reader[i].split(',')[0]))==int(float(reader[i+1].split(',')[0]))):
-                        print(i)
+                        #print(i)
                         i=i+1
                     else:
                        break
-                print(j)
-                print(frame_no)
+                #print(j)
+                #print(frame_no)
                 if(j==frame_no):
                     if(args.obj_det):
                         result = inference_detector(det_model, frame_front)
@@ -270,7 +270,7 @@ while face_cap.isOpened():
                             if(args.pan_seg):
                                 predictions, visualized_output,new_index,label = demo.run_on_image(front,pix_x,pix_y)
                                 
-                                print(new_index)
+                                #print(new_index)
                                 
                                 if(label=="N/A"):
                                     #pix_y=pix_y+300
@@ -311,7 +311,7 @@ while face_cap.isOpened():
                 
             else:
                 break
-            
+print("done")            
 obj_bbox.close()            
 face_cap.release()
 front_cap.release()

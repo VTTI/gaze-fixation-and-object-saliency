@@ -207,7 +207,6 @@ if __name__ == '__main__':
     filename_full = "l2cs_"+osp.basename(args.face)
     front_cap = cv2.VideoCapture(args.front)
     
-    #outputFile = osp.join(args.output,filename_full)
     frame_w=int(front_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_h=int(front_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     front_cap.release()
@@ -228,6 +227,7 @@ if __name__ == '__main__':
     print(osp.join(args.output, filename + "_gaze.csv"))
     csvout_bbox.write("frame_no,pitch,yaw,fx_min,fy_min,fx_max,fy_max\n")
     #iterate driver gaze fixation pipeline
+    print("getting gaze angles..")
     while face_cap.isOpened():
         #get face frame
         ret, frame = face_cap.read()
@@ -260,6 +260,8 @@ if __name__ == '__main__':
                     # print(i)
                     # Crop image
                     img = frame[y_min:y_max, x_min:x_max]
+
+                    #comment out resize for high res videos
                     img = cv2.resize(img, (224, 224))
                     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                     im_pil = Image.fromarray(img)
@@ -282,20 +284,7 @@ if __name__ == '__main__':
                     yaw_predicted= yaw_predicted.cpu().detach().numpy()* np.pi/180.0
                     gp=eulerToDegrees(pitch_predicted)
                     gy=eulerToDegrees(yaw_predicted)
-                    print(str(gp))
-                    print(str(gy))
-                    #x,y,front=drawfront(frame_front, front_pitch, front_yaw, pix_x, pix_y, pitch_predicted, yaw_predicted, dist)
-                    #if(result !=None and len(result)>0):
-                    #    closest=closest_object(result, x, y, classes, det_model_threshold)
-                    #    if(closest):
-                    #        objclass,xmin,ymin,xmax,ymax=closest
-                           
-                    #else:
-                    #     objclass="no object"
-                    #     xmin=0
-                    #     ymin=0
-                    #     xmax=0
-                    #     ymax=0
+                                               
                     csvout_bbox.write('%d,%f,%f,%f,%f,%f,%f' % (i,pitch_predicted,yaw_predicted,x_min,y_min,x_max,y_max) + "\n")
                   
                     
@@ -303,9 +292,9 @@ if __name__ == '__main__':
                 myFPS = 1.0 / (time.time() - start_fps)
                 
 
-                print(frame.shape)
+                #print(frame.shape)
                 #print(output.shape)
-                print("\n")
+                #print("\n")
                 #vid_writer.write(output)
                 
                     
@@ -317,6 +306,6 @@ if __name__ == '__main__':
         else:
             break
         
-            
+    print("done")        
     face_cap.release()
     cv2.destroyAllWindows()
