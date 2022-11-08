@@ -1,6 +1,6 @@
 FROM nvidia/cuda:11.3.0-cudnn8-devel-ubuntu20.04
 RUN rm /etc/apt/sources.list.d/cuda.list
-RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+#RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 RUN apt update
 RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install alien
 RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
@@ -57,3 +57,5 @@ RUN pip3 install -e detectron2_repo
 # Set a fixed model cache directory.
 ENV FVCORE_CACHE="/tmp"
 COPY . /opt/app
+RUN cd /opt/app
+WORKDIR /opt/app

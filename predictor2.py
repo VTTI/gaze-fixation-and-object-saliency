@@ -70,7 +70,7 @@ class VisualizationDemo(object):
 
             if "panoptic_seg" in predictions:
                 panoptic_seg, segments_info = predictions["panoptic_seg"]
-                print(type(panoptic_seg))
+                #print(type(panoptic_seg))
                 vis_output = visualizer.draw_panoptic_seg_predictions(
                     panoptic_seg.to(self.cpu_device), segments_info, alpha=1.0
                 )
@@ -168,7 +168,7 @@ class VisualizationDemo(object):
                 	label=class_names[label_id]
                 else:
                         label="N/A"
-                print(label)
+                #print(label)
                 vis_output = visualizer.draw_panoptic_seg_predictions(
                     torch.from_numpy(ps), segments_info
                 )

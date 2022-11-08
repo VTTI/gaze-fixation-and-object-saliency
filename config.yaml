@@ -19,4 +19,4 @@ seg_opts:
 - MODEL.WEIGHTS
 - detectron2://COCO-PanopticSegmentation/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
 seg_overlay: 1
-snapshot_path: ../driver_gaze_fixation/models/Gaze360/L2CSNet_gaze360.pkl
+snapshot_path: /vtti/scratch/hbhagat/driver_gaze_fixation/models/Gaze360/L2CSNet_gaze360.pkl

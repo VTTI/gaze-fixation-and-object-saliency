@@ -88,7 +88,7 @@ def drawfront(frame_front,front_pitch,front_yaw,pix_x,pix_y,pitch_predicted,yaw_
     col_add= np.array([0,0,0])
     mapped_point=rotated_R * point
     
-    print(mapped_point)
+    #print(mapped_point)
     return int(mapped_point[0,0]),int(mapped_point[1,0]),frame_front
 
 def closest_object(result,xi,yi,classes,det_threshold):
@@ -107,7 +107,7 @@ def closest_object(result,xi,yi,classes,det_threshold):
                         #dy = np.max(y)
                         distances[m.sqrt(dx*dx+dy*dy)]=[classes[i],y[0],y[1],y[2],y[3]]
     if(len(distances)>0):
-        print(min(distances))
+        #print(min(distances))
         return distances[min(distances)]
     else:
         return
@@ -254,8 +254,6 @@ while face_cap.isOpened():
                         
                         if(pix_y>=frame_h-60 or pix_x<=0 or pix_y<=0 or pix_x>=frame_w):
                             csvout_bbox_real.write('%d,%d,%d,%s' % (frame_no,pix_x,pix_y,"OOF") + "\n")
-                            pix_y=-400
-                            pix_x=-400
                             cv2.putText(front, 'Gaze out of frame', (10, 20),cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 255, 0), 1, cv2.LINE_AA)
                             
                         else:
