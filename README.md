@@ -54,6 +54,7 @@ seg_opts:
 seg_overlay: 1
 ```
 # Demo Example
+This command runs the algorithm on the example video files in the Videos folder. It performs both segmentation and detection and stores the result in the current directory.
 ```
 ./run.sh ./Videos/face_ex.mp4 ./Videos/front_ex.mp4 0 ./config.yaml .
 ```
