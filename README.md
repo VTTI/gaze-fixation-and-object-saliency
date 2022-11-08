@@ -53,6 +53,10 @@ seg_opts:
 - ./models/detectron2/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
 seg_overlay: 1
 ```
+# Demo Example
+```
+./run.sh ./Videos/face_ex.mp4 ./Videos/front_ex.mp4 0 ./config.yaml .
+```
 # Usage
 
 You could directly use the run.sh command to get the desired output.
