@@ -31,7 +31,7 @@ def drawfront(frame_front,front_pitch,front_yaw,pix_x,pix_y,pitch_predicted,yaw_
     
     mapped_point=rotated_R * point
     
-    print(mapped_point)
+    #print(mapped_point)
     #img = cv2.circle(frame_front,(int(mapped_point[0,0]),int(mapped_point[1,0])), radius=5, color=(0, 0, 255), thickness=-1)
     return int(mapped_point[0,0]),int(mapped_point[1,0]),frame_front
 
@@ -60,7 +60,7 @@ frame_w=int(front_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_h=int(front_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 
-csv_file=osp.join(output_name,"filtered_dgf_l2cs_"+osp.splitext(osp.basename(face))[0] + "_bbox.csv")
+csv_file=osp.join(output_name,"filtered_l2cs_"+osp.splitext(osp.basename(face))[0] + "_gaze.csv")
 
 #initilize the vid writer for wider frame to fit front and face
 fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
@@ -104,14 +104,22 @@ while face_cap.isOpened():
             if ret==True:
                 start_fps = time.time()
                 #frame = np.rot90(frame,1)
-               
+                #print(frame_w)
                 frame = cv2.resize(frame, (frame_w,frame_h))
                 row=reader[i].split(',')
+                next_row=reader[i+1].split(',')
                 frame_no=int(float(row[0]))
+                next_frame_no=int(float(next_row[0]))
+                while(True):
+                    if(int(float(reader[i].split(',')[0]))==int(float(reader[i+1].split(',')[0]))):
+                        #print(i)
+                        i=i+1
+                    else:
+                       break
                 #print(j)
                 #print(frame_no)
                 if(j==frame_no):
-                    result = inference_detector(det_model, frame_front)
+                    
                     i=i+1
                     pitch=float(row[1])
                     yaw=float(row[2])
@@ -122,15 +130,11 @@ while face_cap.isOpened():
                     bbox_width = fx_max - fx_min
                     bbox_height = fy_max - fy_min
                     fx=(frame_w)//2
-                    fy=(frame_h)//2 +60
+                    fy=(frame_h)//2-60
                     
-                    pix_x,pix_y,front=drawfront(frame_front, front_pitch, front_yaw, fx, fy, pitch, yaw, dist)
-                    if(pix_y>frame_h-60):
-                    	pix_y=pix_y+60
-                    
-                   
                     p=m.degrees(pitch)
                     y=m.degrees(yaw)
+                    pix_x,pix_y,front=drawfront(frame_front, front_pitch, front_yaw, fx, fy, pitch, yaw, dist)
                     cv2.putText(frame, 'Pitch: {:.1f}, Yaw:{:.1f}'.format(p,-y), (10, 20),cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 255, 0), 1, cv2.LINE_AA)
                     draw_gaze(fx_min,fy_min,bbox_width, bbox_height,frame,(yaw,pitch),color=(0,0,255))
                     front = cv2.circle(frame_front,(pix_x,pix_y), radius=5, color=(0, 0, 255), thickness=-1)
