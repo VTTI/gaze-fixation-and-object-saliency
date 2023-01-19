@@ -7,9 +7,9 @@ This repository provides code to estimate Point of Gaze (PoG) on the scene-facin
 4. Yarbus Plots
 ## Prerequisite
 
-Download [shrp2_model_file](https://mirror.vtti.vt.edu/vtti/ctbs/object_detection/shrp2_original_split%2Bextra_data_outside_objects.pth) into ./models/trained_models
+Download [shrp2_model_file](https://mirror.vtti.vt.edu/vtti/ctbs/object_detection/shrp2_original_split%2Bextra_data_outside_objects.pth) into ./models
 
-Download [Gaze360_model_file](https://drive.google.com/file/d/18S956r4jnHtSeT8z8t3z8AoJZjVnNqPJ/view?usp=share_link) into ./models/Gaze360
+Download [Gaze360_model_file](https://drive.google.com/file/d/18S956r4jnHtSeT8z8t3z8AoJZjVnNqPJ/view?usp=share_link) into ./models
 
 
 ## Installation
@@ -27,13 +27,13 @@ Run: nvidia-docker run -it --gpus=all --rm -v "path_to_local_folder":"path_insid
 Below is an examaple of the config file.
 ``` 
 # gaze angle estimation model path, architecture and batch size (we use L2CSNet's specifications)
-snapshot_path: ./models/Gaze360/L2CSNet_gaze360.pkl
+snapshot_path: ./models/L2CSNet_gaze360.pkl
 arch: ResNet50
 batch_size: 1
 
 # object detection model's specifications (we have used our inhouse SHRP2 object detection model)
 det_gpu_id: 1
-det_model_checkpoint: ./models/trained_models/shrp2_original_split+extra_data_outside_objects.pth
+det_model_checkpoint: ./models/shrp2_original_split+extra_data_outside_objects.pth
 det_model_classes: ./models/classes/classes_shrp2_extra.txt
 det_model_config: ./models/custom_configs/shrp2+extra/cascade_rcnn_r101_fpn_dconv_c3-c5_1x_coco.py
 det_model_threshold: 0.5
@@ -56,7 +56,7 @@ seg_confidence_threshold: 0.5
 seg_config_file: configs/COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml
 seg_opts:
 - MODEL.WEIGHTS
-- ./models/detectron2/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
+- detectron2://COCO-PanopticSegmentation/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
 seg_overlay: 1
 ```
 # Demo Example
