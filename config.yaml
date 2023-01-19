@@ -1,9 +1,9 @@
 arch: ResNet50
 batch_size: 1
 det_gpu_id: 1
-det_model_checkpoint: /vtti/scratch/mmdetection/trained_models/shrp2_original_split+extra_data_outside_objects/epoch_10.pth
-det_model_classes: /vtti/scratch/mmdetection/classes/classes_shrp2_extra.txt
-det_model_config: /vtti/scratch/mmdetection/custom_configs/shrp2+extra/cascade_rcnn_r101_fpn_dconv_c3-c5_1x_coco.py
+det_model_checkpoint: ./models/shrp2_original_split+extra_data_outside_objects.pth
+det_model_classes: ./models/classes/classes_shrp2_extra.txt
+det_model_config: ./models/custom_configs/shrp2+extra/cascade_rcnn_r101_fpn_dconv_c3-c5_1x_coco.py
 det_model_threshold: 0.5
 dist: 350
 f_pitch: 0
@@ -19,4 +19,4 @@ seg_opts:
 - MODEL.WEIGHTS
 - detectron2://COCO-PanopticSegmentation/panoptic_fpn_R_101_3x/139514519/model_final_cafdb1.pkl
 seg_overlay: 1
-snapshot_path: /vtti/scratch/hbhagat/driver_gaze_fixation/models/Gaze360/L2CSNet_gaze360.pkl
+snapshot_path: ./models/L2CSNet_gaze360.pkl
