@@ -5,6 +5,12 @@ This repository provides code to estimate Point of Gaze (PoG) on the scene-facin
 2. Closest object of fixation from PoG using Object Detection (SHRP2 trained models)
 3. Fixation Heatmap (Heatmap generated for the current frame by aggregating the PoGs from the last (fps x 3) frames)
 4. Yarbus Plots
+## Prerequisite
+
+Download [shrp2_model_file](https://mirror.vtti.vt.edu/vtti/ctbs/object_detection/shrp2_original_split%2Bextra_data_outside_objects.pth) into ./models/trained_models
+
+Download [Gaze360_model_file](https://drive.google.com/file/d/18S956r4jnHtSeT8z8t3z8AoJZjVnNqPJ/view?usp=share_link) into ./models/Gaze360
+
 
 ## Installation
 To install the framework the recommened method is by following these steps:
@@ -27,9 +33,9 @@ batch_size: 1
 
 # object detection model's specifications (we have used our inhouse SHRP2 object detection model)
 det_gpu_id: 1
-det_model_checkpoint: /vtti/scratch/mmdetection/trained_models/shrp2_original_split+extra_data_outside_objects/epoch_10.pth
-det_model_classes: /vtti/scratch/mmdetection/classes/classes_shrp2_extra.txt
-det_model_config: /vtti/scratch/mmdetection/custom_configs/shrp2+extra/cascade_rcnn_r101_fpn_dconv_c3-c5_1x_coco.py
+det_model_checkpoint: ./models/trained_models/shrp2_original_split+extra_data_outside_objects.pth
+det_model_classes: ./models/classes/classes_shrp2_extra.txt
+det_model_config: ./models/custom_configs/shrp2+extra/cascade_rcnn_r101_fpn_dconv_c3-c5_1x_coco.py
 det_model_threshold: 0.5
 
 # dist is the distance in pixels from driver's face to the camera
