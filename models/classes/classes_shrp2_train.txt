@@ -1,0 +1,10 @@
+bus
+car
+motorcycle
+pedalcycle
+person
+pickuptruck
+stopsign
+suv
+trafficsignal
+truck

@@ -1,0 +1,4 @@
+bicycle
+car
+motorcycle
+person

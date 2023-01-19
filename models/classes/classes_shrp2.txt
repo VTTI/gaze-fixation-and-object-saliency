@@ -1,0 +1,10 @@
+bicycle
+car
+motorcycle
+person
+bus
+truck
+stop sign
+traffic light
+stop_sign
+traffic_light
